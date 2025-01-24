@@ -1,6 +1,8 @@
 import selenium.webdriver as webdriver
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
+import html
+import re
 
 
 def scrape_website(website):
@@ -8,6 +10,11 @@ def scrape_website(website):
 
     chrome_driver_path = ""
     options = webdriver.ChromeOptions()
+    options.add_argument("--headless")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
     driver = webdriver.Chrome(service=Service(chrome_driver_path), options=options)
 
     try:
@@ -33,6 +40,7 @@ def clean_body(body_content):
         script_or_style.extract()
 
     cleaned_content = soup.get_text(separator="\n")
+    cleaned_content = re.sub(r"[\x00-\x1F\x7F]", " ", cleaned_content)
     cleaned_content = "\n".join(
         line.strip() for line in cleaned_content.splitlines() if line.strip()
     )
