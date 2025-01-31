@@ -15,7 +15,7 @@ template = (
 )
 
 
-model = OllamaLLM(model="llama3.2:3b")
+model = OllamaLLM(model="llama3.2")
 
 
 def parse_with_ollama(dom_chunks, parse_description):
@@ -24,13 +24,13 @@ def parse_with_ollama(dom_chunks, parse_description):
 
     parsed_results = []
 
-    print("Parsing contents with ai...")
+    # print("Parsing contents with ai...")
     for i, chunks in enumerate(dom_chunks, start=1):
         response = chain.invoke(
             {"dom_content": chunks, "parse_description": parse_description}
         )
-        print(f"Parsed batch {i} / {len(dom_chunks)}")
+        # print(f"Parsed batch {i} / {len(dom_chunks)}")
         parsed_results.append(response)
-    print("Parsing completed.")
+    # print("Parsing completed.")
 
     return "/n".join(parsed_results)
